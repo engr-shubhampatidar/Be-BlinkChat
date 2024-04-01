@@ -1,20 +1,39 @@
 const express = require("express");
-const connectDB = require("./src/config/db");
-const userRoutes = require("./src/routes/userRoutes");
+const app = express();
+const http = require("http");
+const { Server } = require("socket.io");
+const cors = require("cors");
+const socketEvents = require("./src/sockets/socketEvents"); // Import socket events handler
+const connectDB = require("./src/config/db"); // Import database connection setup
+const userRoutes = require("./src/routes/userRoutes"); // Import user routes
+const messageRoutes = require("./src/routes/messageRoutes"); // Import message routes
 
 const PORT = process.env.PORT || 3000;
 require("dotenv").config();
 
-const app = express();
-
 // Middleware
+app.use(cors());
 app.use(express.json());
 
 // Connect to MongoDB
 connectDB()
   .then(() => {
-    // Start server
-    app.listen(PORT, () => {
+    // Start HTTP server
+    const server = http.createServer(app);
+
+    // Socket.IO setup
+    const io = new Server(server, {
+      cors: {
+        origin: "http://localhost:3000",
+        methods: ["GET", "POST"],
+      },
+    });
+
+    // Attach socket event handlers
+    socketEvents(io);
+
+    // Start HTTP server
+    server.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
   })
@@ -24,6 +43,7 @@ connectDB()
 
 // Routes
 app.use("/api/user", userRoutes);
+app.use("/api/messages", messageRoutes);
 
 // Route returning "Hello"
 app.get("/", (req, res) => {
@@ -32,6 +52,16 @@ app.get("/", (req, res) => {
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send("Something broke!");
+  if (err.name === "ValidationError") {
+    // Handle Mongoose validation errors
+    return res.status(400).json({ message: err.message });
+  } else if (err.name === "UnauthorizedError") {
+    // Handle JWT authentication errors
+    return res.status(401).json({ message: "Unauthorized" });
+  } else {
+    // Handle other errors
+    console.error(err.stack);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
 });
+

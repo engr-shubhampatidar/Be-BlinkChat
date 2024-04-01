@@ -62,4 +62,16 @@ router.get("/profile/:id", authenticateToken, async (req, res) => {
   }
 });
 
+// all users
+router.get("/all", async (req, res) => {
+  try {
+    const user = await User.find({});
+
+    if (!user) return res.status(404).send("No such user");
+    res.status(200).send({ user });
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
+
 module.exports = router;
