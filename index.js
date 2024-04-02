@@ -7,11 +7,22 @@ const socketEvents = require("./src/sockets/socketEvents"); // Import socket eve
 const connectDB = require("./src/config/db"); // Import database connection setup
 const userRoutes = require("./src/routes/userRoutes"); // Import user routes
 const messageRoutes = require("./src/routes/messageRoutes"); // Import message routes
+import cors from "cors";
+
+const options = [
+  cors({
+    origin: "*",
+    methods: "*",
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  }),
+];
 
 const PORT = process.env.PORT || 3000;
 require("dotenv").config();
 
 // Middleware
+app.use(options);
 app.use(cors());
 app.use(express.json());
 
