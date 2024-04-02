@@ -9,12 +9,15 @@ const userRoutes = require("./src/routes/userRoutes"); // Import user routes
 const messageRoutes = require("./src/routes/messageRoutes"); // Import message routes
 
 const PORT = process.env.PORT || 3000;
+const CLIENT = process.env.CLIENT_URL;
+console.log(`Port ${PORT}`);
+console.log(`Client ${CLIENT}`);
 require("dotenv").config();
 
 // Middleware
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: CLIENT,
   })
 );
 app.use(express.json());
@@ -28,7 +31,7 @@ connectDB()
     // Socket.IO setup
     const io = new Server(server, {
       cors: {
-        origin: process.env.CLIENT_URL,
+        origin: CLIENT,
         methods: ["GET", "POST"],
       },
     });
