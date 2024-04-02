@@ -12,8 +12,11 @@ const PORT = process.env.PORT || 3000;
 require("dotenv").config();
 
 // Middleware
-app.options("*", cors());
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+  })
+);
 app.use(express.json());
 
 // Connect to MongoDB
