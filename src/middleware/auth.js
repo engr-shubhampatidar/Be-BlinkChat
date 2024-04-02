@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const isTokenBlacklisted = require("../utils/blackListManager");
+// const isTokenBlacklisted = require("../utils/blackListManager");
 require("dotenv").config();
 
 const authenticateToken = (req, res, next) => {
@@ -8,7 +8,7 @@ const authenticateToken = (req, res, next) => {
     return res.status(401).send("Access denied");
 
   const token = authHeader.split(" ")[1]; // Extract token without "Bearer" prefix
-  if (isTokenBlacklisted(token)) return res.status(401).send("Token revoked");
+  // if (isTokenBlacklisted(token)) return res.status(401).send("Token revoked");
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
