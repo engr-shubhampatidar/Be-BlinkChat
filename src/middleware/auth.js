@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const { isTokenBlacklisted } = require("../utils/blackListManager");
+const isTokenBlacklisted = require("../utils/blackListManager");
 require("dotenv").config();
 
 const authenticateToken = (req, res, next) => {
