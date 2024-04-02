@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-const { tokenBlacklist } = require("../routes/userRoutes");
 const { isTokenBlacklisted } = require("../utils/blackListManager");
 require("dotenv").config();
 
