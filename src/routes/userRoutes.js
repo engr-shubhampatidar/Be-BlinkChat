@@ -3,7 +3,7 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const authenticateToken = require("../middleware/auth");
-const { addToBlacklist } = require("../utils/blackListManager");
+// const { addToBlacklist } = require("../utils/blackListManager");
 
 const router = express.Router();
 
@@ -43,7 +43,7 @@ router.post("/login", async (req, res) => {
 router.get("/logout", function (req, res) {
   try {
     const token = req.header("Authorization").split(" ")[1];
-    addToBlacklist(token);
+    // addToBlacklist(token);
     res.send("Logout successful");
   } catch (error) {
     res.status(404).send(error.message);
