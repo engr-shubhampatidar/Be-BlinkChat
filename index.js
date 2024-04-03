@@ -15,11 +15,8 @@ console.log(`Client ${CLIENT}`);
 require("dotenv").config();
 
 // Middleware
-app.use(
-  cors({
-    origin: CLIENT,
-  })
-);
+app.options("*", cors());
+app.use("*", cors());
 app.use(express.json());
 
 // Connect to MongoDB
@@ -31,8 +28,7 @@ connectDB()
     // Socket.IO setup
     const io = new Server(server, {
       cors: {
-        origin: CLIENT,
-        methods: ["GET", "POST"],
+        origin: "*",
       },
     });
 
