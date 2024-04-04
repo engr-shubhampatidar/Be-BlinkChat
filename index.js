@@ -19,8 +19,8 @@ app.options("*", cors());
 app.use(
   cors({
     origin: [
-      "https://be-blink-chat.vercel.app/",
-      "https://fe-blink-chat.vercel.app/",
+      "https://be-blink-chat.vercel.app",
+      "https://fe-blink-chat.vercel.app",
     ],
     credentials: true,
   })
