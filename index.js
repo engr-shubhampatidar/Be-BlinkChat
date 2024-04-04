@@ -16,7 +16,15 @@ require("dotenv").config();
 
 // Middleware
 app.options("*", cors());
-app.use("*", cors());
+app.use(
+  cors({
+    origin: [
+      "https://be-blink-chat.vercel.app/",
+      "https://fe-blink-chat.vercel.app/",
+    ],
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 // Connect to MongoDB
