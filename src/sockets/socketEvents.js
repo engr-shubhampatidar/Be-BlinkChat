@@ -27,12 +27,12 @@ module.exports = function (socketIo) {
     socket.on("message", async (data) => {
       try {
         // Save message to the database
-        const message = new Message(data);
-        await message.save();
+        // const message = new Message(data);
+        // await message.save();
 
         console.log(data, "message saved");
         // Send the new message only to the recipient's room
-        socketIo.to(data.receiver).emit("message", message);
+        socketIo.to(data.receiver).emit("message", data);
       } catch (error) {
         console.error("Error saving message:", error);
       }

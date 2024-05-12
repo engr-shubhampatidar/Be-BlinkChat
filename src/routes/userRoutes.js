@@ -88,12 +88,19 @@ router.post("/upload/profile", authenticateToken, async (req, res) => {
 });
 
 // all users
-router.get("/all", async (req, res) => {
+router.get("/all", authenticateToken, async (req, res) => {
   try {
-    const user = await User.find({});
+    const userId = req.user._id; // Assuming you have user authentication in place
 
-    if (!user) return res.status(404).send("No such user");
-    res.status(200).send({ user });
+    // Filter users to exclude the requesting user
+    const users = await User.find({ _id: { $ne: userId } });
+
+    if (!users.length) {
+      // Handle the case where there are no non-requesting users
+      return res.status(200).send({ users: [] }); // Send an empty array, not 404
+    }
+
+    res.status(200).send({ users });
   } catch (error) {
     res.status(400).send(error.message);
   }
