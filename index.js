@@ -21,6 +21,7 @@ app.use(
     origin: [
       "https://be-blink-chat.vercel.app",
       "https://fe-blink-chat.vercel.app",
+      `${CLIENT}`,
       "http://localhost:3000",
     ],
     credentials: true,
